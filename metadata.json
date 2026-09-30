@@ -1,0 +1,6 @@
+{
+  "name": "PromptTrace - AI Data Passports & LLM Audit Trail",
+  "description": "B2B Micro-SaaS for LLM observability, cryptographic AI Data Passports, and tamper-proof RAG audit logging.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
