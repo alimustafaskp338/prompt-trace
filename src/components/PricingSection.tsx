@@ -32,7 +32,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectTier }) 
             </span>
             <span className="text-zinc-300 dark:text-zinc-700">•</span>
             <span className="flex items-center gap-1 text-red-600 font-bold">
-              <Smartphone className="h-3.5 w-3.5" /> JazzCash Direct: +923105905246
+              <Smartphone className="h-3.5 w-3.5" /> JazzCash Direct: {(import.meta.env.VITE_JAZZCASH_NUMBER as string) || '+923105905246'}
             </span>
           </div>
 
@@ -224,7 +224,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectTier }) 
                 <ArrowRight className="h-4 w-4" />
               </button>
               <p className="text-center text-[10px] text-zinc-400">
-                Direct JazzCash to +923105905246 or Card • Instant API key
+                Direct JazzCash to {(import.meta.env.VITE_JAZZCASH_NUMBER as string) || '+923105905246'} or Card • Instant API key
               </p>
             </div>
           </div>

@@ -38,7 +38,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const JAZZCASH_NO = '+923105905246';
+  const JAZZCASH_NO = (import.meta.env.VITE_JAZZCASH_NUMBER as string) || '+923105905246';
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);

@@ -14,6 +14,11 @@ import { generateEuAiActCsv, generateEuAiActJson } from './src/lib/euAiActExport
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
+// Configurable Environment Variables for Vercel / Production
+const JAZZCASH_NUMBER = process.env.JAZZCASH_NUMBER || process.env.VITE_JAZZCASH_NUMBER || '+923105905246';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.VITE_ADMIN_EMAIL || 'alimustafaskp338@gmail.com';
+const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || 'prompttrace-secret-key-prod';
+
 // Body parser
 app.use(express.json({ limit: '10mb' }));
 
@@ -395,12 +400,12 @@ app.get('/api/v1/payments', (req: Request, res: Response) => {
     payments: paymentsStore,
     total: paymentsStore.length,
     pending: paymentsStore.filter(p => p.status === 'pending_approval').length,
-    jazzcashRecipient: '+923105905246'
+    jazzcashRecipient: JAZZCASH_NUMBER
   });
 });
 
 /**
- * Submit payment (Card or JazzCash to +923105905246)
+ * Submit payment (Card or JazzCash to configured recipient)
  */
 app.post('/api/v1/payments', (req: Request, res: Response) => {
   const data: PaymentRecord = req.body;
@@ -411,7 +416,7 @@ app.post('/api/v1/payments', (req: Request, res: Response) => {
   const newPayment: PaymentRecord = {
     ...data,
     id: `pay_${Math.random().toString(36).substring(2, 10)}`,
-    jazzcashRecipient: '+923105905246',
+    jazzcashRecipient: JAZZCASH_NUMBER,
     timestamp: new Date().toISOString(),
     status: data.paymentMethod === 'credit_card' ? 'completed' : 'pending_approval'
   };
@@ -421,7 +426,7 @@ app.post('/api/v1/payments', (req: Request, res: Response) => {
     success: true,
     payment: newPayment,
     message: data.paymentMethod === 'jazzcash'
-      ? 'JazzCash payment logged for admin verification. Recipient: +923105905246'
+      ? `JazzCash payment logged for admin verification. Recipient: ${JAZZCASH_NUMBER}`
       : 'Card payment processed and tier activated.'
   });
 });
@@ -436,7 +441,7 @@ app.post('/api/v1/payments/:id/approve', (req: Request, res: Response) => {
 
   pay.status = 'completed';
   pay.approvedAt = new Date().toISOString();
-  pay.approvedBy = 'Administrator (Ali Mustafa)';
+  pay.approvedBy = `Administrator (${ADMIN_EMAIL})`;
 
   res.json({ success: true, payment: pay });
 });
@@ -475,6 +480,12 @@ async function startServer() {
   });
 }
 
-startServer().catch(err => {
-  console.error('Failed to start PromptTrace server:', err);
-});
+// Export Express app for Vercel Serverless Function deployment
+export default app;
+
+// In standalone environments (local dev or container), boot the listener
+if (!process.env.VERCEL) {
+  startServer().catch(err => {
+    console.error('Failed to start PromptTrace server:', err);
+  });
+}

@@ -51,8 +51,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [cardName, setCardName] = useState(userName);
 
   // JazzCash fields
-  const JAZZCASH_NO = '+923105905246';
-  const JAZZCASH_TITLE = 'Ali Mustafa (PromptTrace Official)';
+  const JAZZCASH_NO = (import.meta.env.VITE_JAZZCASH_NUMBER as string) || '+923105905246';
+  const JAZZCASH_TITLE = (import.meta.env.VITE_JAZZCASH_ACCOUNT_TITLE as string) || 'Ali Mustafa (PromptTrace Official)';
   const [jazzSenderNo, setJazzSenderNo] = useState('03001234567');
   const [jazzTid, setJazzTid] = useState('');
   const [copiedJazzNo, setCopiedJazzNo] = useState(false);
